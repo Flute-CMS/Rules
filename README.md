@@ -8,7 +8,7 @@ Module for displaying in your rules divided into categories. Supports arbitrary 
 
 Download the latest release and install it via the Flute CMS admin panel.
 
-Current version: **1.1.0**
+Current version: **1.1.1**
 
 ## Authors
 

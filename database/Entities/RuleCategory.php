@@ -13,49 +13,43 @@ use Cycle\ORM\Entity\Behavior;
 use DateTimeImmutable;
 
 #[Entity]
-#[Table(indexes: [new Index(columns: ["slug"], unique: true)])]
-#[Behavior\CreatedAt(
-    field: 'createdAt',
-    column: 'created_at'
-)]
-#[Behavior\UpdatedAt(
-    field: 'updatedAt',
-    column: 'updated_at'
-)]
+#[Table(indexes: [new Index(columns: ['slug'], unique: true)])]
+#[Behavior\CreatedAt(field: 'createdAt', column: 'created_at')]
+#[Behavior\UpdatedAt(field: 'updatedAt', column: 'updated_at')]
 class RuleCategory extends ActiveRecord
 {
-    #[Column(type: "primary")]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Column(type: "string")]
+    #[Column(type: 'string')]
     public string $name;
 
-    #[Column(type: "string")]
+    #[Column(type: 'string')]
     public string $slug;
 
-    #[Column(type: "text", nullable: true)]
+    #[Column(type: 'text', nullable: true)]
     public ?string $content = null;
 
-    #[Column(type: "integer", nullable: true)]
+    #[Column(type: 'integer', nullable: true)]
     public ?int $sort_order = 0;
 
-    #[Column(type: "boolean", default: true)]
+    #[Column(type: 'boolean', default: true)]
     public bool $active = true;
 
-    #[BelongsTo(target: RuleCategory::class, nullable: true, innerKey: "parent_id")]
+    #[BelongsTo(target: RuleCategory::class, nullable: true, innerKey: 'parent_id')]
     public ?RuleCategory $parent = null;
 
-    #[HasMany(target: RuleCategory::class, nullable: true, outerKey: "parent_id")]
+    #[HasMany(target: RuleCategory::class, nullable: true, outerKey: 'parent_id')]
     public array $children = [];
 
-    #[Column(type: "datetime")]
+    #[Column(type: 'datetime')]
     public DateTimeImmutable $createdAt;
 
-    #[Column(type: "datetime", nullable: true)]
+    #[Column(type: 'datetime', nullable: true)]
     public ?DateTimeImmutable $updatedAt = null;
 
     public function getActiveChildren(): array
     {
-        return array_filter($this->children, static fn ($child) => $child->active);
+        return array_filter($this->children, static fn($child) => $child->active);
     }
 }

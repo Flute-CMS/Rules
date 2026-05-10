@@ -19,7 +19,11 @@
 
 // Sidebar
 .rules-sidebar {
-    @extend .card;
+    background-color: var(--blurred-background);
+    border: 1px solid var(--transp-1);
+    border-radius: var(--border1);
+    box-shadow: var(--shadow-small);
+    contain: layout style;
     width: 280px;
     min-width: 280px;
     position: sticky;
@@ -38,9 +42,12 @@
 }
 
 .rules-sidebar__header {
-    padding: 16px;
+    padding: 14px 16px;
     border-bottom: 1px solid var(--transp-1);
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .rules-sidebar__title {
@@ -53,10 +60,19 @@
     letter-spacing: -0.01em;
 
     svg {
-        width: 16px;
-        height: 16px;
-        color: var(--text-400);
+        width: 15px;
+        height: 15px;
+        color: var(--accent);
     }
+}
+
+.rules-sidebar__count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-500);
+    background: var(--transp-1);
+    padding: 2px 8px;
+    border-radius: 20px;
 }
 
 // Categories list
@@ -90,7 +106,7 @@
     align-items: center;
     gap: 8px;
     width: 100%;
-    padding: 10px 12px;
+    padding: 9px 12px;
     border: none;
     border-radius: var(--border05);
     background: transparent;
@@ -106,11 +122,15 @@
     &:hover {
         background: var(--transp-05);
         color: var(--text);
+
+        .rule-tab-num {
+            color: var(--accent);
+        }
     }
 
-    // Active state - monochrome with left border indicator
+    // Active state with accent left border
     &.rule-tab-active {
-        background: var(--transp-05);
+        background: color-mix(in srgb, var(--accent) 6%, transparent);
         color: var(--text);
         font-weight: 600;
 
@@ -121,9 +141,13 @@
             top: 50%;
             transform: translateY(-50%);
             width: 2px;
-            height: 16px;
-            background: var(--text);
+            height: 18px;
+            background: var(--accent);
             border-radius: 1px;
+        }
+
+        .rule-tab-num {
+            color: var(--accent);
         }
     }
 
@@ -133,6 +157,18 @@
         color: var(--text);
         font-weight: 600;
     }
+}
+
+// Number indicator
+.rule-tab-num {
+    font-size: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-600);
+    letter-spacing: 0.01em;
+    min-width: 22px;
+    flex-shrink: 0;
+    transition: color 0.1s ease;
 }
 
 // Toggle icon
@@ -145,6 +181,7 @@
     flex-shrink: 0;
     border-radius: 4px;
     transition: background 0.1s ease;
+    margin-left: auto;
 
     &:hover {
         background: var(--transp-1);
@@ -156,6 +193,22 @@
         color: var(--text-500);
         transition: transform 0.15s ease;
     }
+}
+
+// Child dot indicator
+.rule-tab-child-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-600);
+    flex-shrink: 0;
+    margin-left: 4px;
+    margin-right: 2px;
+    transition: background 0.1s ease;
+}
+
+.rule-tab-child.rule-tab-active .rule-tab-child-dot {
+    background: var(--accent);
 }
 
 .rule-tab-text {
@@ -229,18 +282,34 @@
 .rule-category-content {
     h2 {
         font-size: 1.5rem;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--text);
         margin-bottom: 20px;
         padding-bottom: 16px;
         border-bottom: 1px solid var(--transp-1);
-        letter-spacing: -0.02em;
+        letter-spacing: -0.025em;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+        }
     }
 }
 
 // Content body
 .rule-content-body {
-    @extend .card;
+    background-color: var(--blurred-background);
+    border: 1px solid var(--transp-1);
+    border-radius: var(--border1);
+    box-shadow: var(--shadow-small);
+    contain: layout style;
     padding: var(--space-md) var(--space-lg);
     font-size: var(--p);
     line-height: 1.5;

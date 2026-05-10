@@ -12,9 +12,7 @@ class RuleCategoryService implements RuleCategoryServiceInterface
      */
     public function getAll(bool $ignoreActive = false): array
     {
-        $query = RuleCategory::query()
-            ->orderBy('sort_order')
-            ->where('parent_id', null);
+        $query = RuleCategory::query()->orderBy('sort_order')->where('parent_id', null);
 
         if ($ignoreActive) {
             $query->load('children', [
@@ -23,12 +21,11 @@ class RuleCategoryService implements RuleCategoryServiceInterface
                 },
             ]);
         } else {
-            $query->where('active', true)
-                ->load('children', [
-                    'load' => static function ($qb) use ($ignoreActive) {
-                        $qb->where('active', true)->orderBy('sort_order');
-                    },
-                ]);
+            $query->where('active', true)->load('children', [
+                'load' => static function ($qb) use ($ignoreActive) {
+                    $qb->where('active', true)->orderBy('sort_order');
+                },
+            ]);
         }
 
         return $query->fetchAll();

@@ -35,8 +35,7 @@ class RuleCategoriesScreen extends Screen
 
     public function mount(): void
     {
-        breadcrumb()->add(__('def.admin_panel'), url('/admin'))
-            ->add(__('rules.admin.title.categories'));
+        breadcrumb()->add(__('def.admin_panel'), url('/admin'))->add(__('rules.admin.title.categories'));
 
         $this->categoryService = app(RuleCategoryServiceInterface::class);
         $this->loadCategories();
@@ -61,28 +60,27 @@ class RuleCategoriesScreen extends Screen
         }
 
         $sortable = LayoutFactory::sortable('categories', [
-            Sight::make('title', '')
-                ->render(static fn (RuleCategory $category) => view('admin-rules::cells.category-title', compact('category'))),
-            Sight::make('actions', '')
-                ->render(
-                    static fn (RuleCategory $category) => DropDown::make()
-                        ->icon('ph.regular.dots-three-outline-vertical')
-                        ->list([
-                            DropDownItem::make(__('def.edit'))
-                                ->modal('editCategoryModal', ['categoryId' => $category->id])
-                                ->icon('ph.regular.pencil')
-                                ->type(Color::OUTLINE_PRIMARY)
-                                ->size('small')
-                                ->fullWidth(),
-                            DropDownItem::make(__('def.delete'))
-                                ->confirm(__('rules.admin.messages.confirm_delete'))
-                                ->method('deleteCategory', ['id' => $category->id])
-                                ->icon('ph.regular.trash')
-                                ->type(Color::OUTLINE_DANGER)
-                                ->size('small')
-                                ->fullWidth(),
-                        ])
-                ),
+            Sight::make('title', '')->render(static fn(RuleCategory $category) => view(
+                'admin-rules::cells.category-title',
+                compact('category'),
+            )),
+            Sight::make('actions', '')->render(static fn(RuleCategory $category) => DropDown::make()
+                ->icon('ph.regular.dots-three-outline-vertical')
+                ->list([
+                    DropDownItem::make(__('def.edit'))
+                        ->modal('editCategoryModal', ['categoryId' => $category->id])
+                        ->icon('ph.regular.pencil')
+                        ->type(Color::OUTLINE_PRIMARY)
+                        ->size('small')
+                        ->fullWidth(),
+                    DropDownItem::make(__('def.delete'))
+                        ->confirm(__('rules.admin.messages.confirm_delete'))
+                        ->method('deleteCategory', ['id' => $category->id])
+                        ->icon('ph.regular.trash')
+                        ->type(Color::OUTLINE_DANGER)
+                        ->size('small')
+                        ->fullWidth(),
+                ])),
         ]);
 
         $sortable->onSortEnd('updateCategoryPositions');
@@ -117,22 +115,18 @@ class RuleCategoriesScreen extends Screen
     {
         return LayoutFactory::modal($parameters, [
             LayoutFactory::field(
-                Input::make('category_name')
-                    ->type('text')
-                    ->placeholder(__('rules.admin.placeholders.category_name'))
-            )->label(__('rules.admin.fields.name'))
+                Input::make('category_name')->type('text')->placeholder(__('rules.admin.placeholders.category_name')),
+            )
+                ->label(__('rules.admin.fields.name'))
                 ->required(),
 
-            LayoutFactory::field(
-                RichText::make('category_content')
-                    ->placeholder(__('rules.admin.placeholders.content'))
-            )->label(__('rules.admin.fields.content'))
+            LayoutFactory::field(RichText::make('category_content')->placeholder(__(
+                'rules.admin.placeholders.content',
+            )))
+                ->label(__('rules.admin.fields.content'))
                 ->small(__('rules.admin.helps.content')),
 
-            LayoutFactory::field(
-                Toggle::make('category_active')
-                    ->value(true)
-            )->label(__('rules.admin.fields.active')),
+            LayoutFactory::field(Toggle::make('category_active')->value(true))->label(__('rules.admin.fields.active')),
         ])
             ->title(__('rules.admin.title.add_category'))
             ->size('lg')
@@ -157,31 +151,28 @@ class RuleCategoriesScreen extends Screen
         }
 
         return LayoutFactory::modal($parameters, [
-            LayoutFactory::field(
-                Input::make('category_id')
-                    ->type('hidden')
-                    ->value($category->id)
-            ),
+            LayoutFactory::field(Input::make('category_id')->type('hidden')->value($category->id)),
 
             LayoutFactory::field(
                 Input::make('category_name')
                     ->type('text')
                     ->value($category->name)
-                    ->placeholder(__('rules.admin.placeholders.category_name'))
-            )->label(__('rules.admin.fields.name'))
+                    ->placeholder(__('rules.admin.placeholders.category_name')),
+            )
+                ->label(__('rules.admin.fields.name'))
                 ->required(),
 
             LayoutFactory::field(
                 RichText::make('category_content')
                     ->value($category->content)
-                    ->placeholder(__('rules.admin.placeholders.content'))
-            )->label(__('rules.admin.fields.content'))
+                    ->placeholder(__('rules.admin.placeholders.content')),
+            )
+                ->label(__('rules.admin.fields.content'))
                 ->small(__('rules.admin.helps.content')),
 
-            LayoutFactory::field(
-                Toggle::make('category_active')
-                    ->value($category->active)
-            )->label(__('rules.admin.fields.active')),
+            LayoutFactory::field(Toggle::make('category_active')->value($category->active))->label(__(
+                'rules.admin.fields.active',
+            )),
         ])
             ->title(__('rules.admin.title.edit_category', ['category' => $category->name]))
             ->size('lg')

@@ -14,7 +14,7 @@ class RulesController
         $this->categoryService = $categoryService;
     }
 
-    #[Route(uri: "/rules", name: "rules.index")]
+    #[Route(uri: '/rules', name: 'rules.index')]
     public function index()
     {
         $categories = $this->categoryService->getAll();
@@ -26,7 +26,7 @@ class RulesController
         ]);
     }
 
-    #[Route(uri: "/rules/category/{slug}", name: "rules.category")]
+    #[Route(uri: '/rules/category/{slug}', name: 'rules.category')]
     public function category(string $slug)
     {
         $category = $this->categoryService->getBySlug($slug);
@@ -40,7 +40,7 @@ class RulesController
         ]);
     }
 
-    #[Route(uri: "/rules/{slug}", name: "rules.view")]
+    #[Route(uri: '/rules/{slug}', name: 'rules.view')]
     public function view(string $slug)
     {
         $category = $this->categoryService->getBySlug($slug);
@@ -92,10 +92,6 @@ class RulesController
         }
 
         // If category has a parent, check if parent is also active
-        return !($category->parent && !$category->parent->active)
-
-
-
-        ;
+        return !( $category->parent && !$category->parent->active );
     }
 }

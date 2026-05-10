@@ -17,9 +17,10 @@
                     <aside class="rules-sidebar">
                         <div class="rules-sidebar__header">
                             <div class="rules-sidebar__title">
-                                <x-icon path="ph.regular.list-bullets" />
+                                <x-icon path="ph.regular.shield-check" />
                                 <span>{{ __('rules.page_title') }}</span>
                             </div>
+                            <span class="rules-sidebar__count">{{ count($categories) }}</span>
                         </div>
 
                         <nav class="rules-categories">
@@ -44,7 +45,7 @@
                                      data-category-id="{{ $category->id }}"
                                      @if ($shouldExpand) data-expanded="true" @endif>
 
-                                    <button class="rule-tab {{ $isActive ? 'rule-tab-active' : '' }}"
+                                    <button class="rule-tab {{ $isActive ? 'rule-tab-active' : '' }} {{ $hasActiveChild ? 'rule-tab-parent-active' : '' }}"
                                         hx-get="{{ url('/rules/' . $category->slug) }}"
                                         hx-push-url="true"
                                         hx-target="#rule-content"
@@ -53,18 +54,20 @@
                                         data-category-slug="{{ $category->slug }}"
                                         data-category-id="{{ $category->id }}">
 
+                                        <span class="rule-tab-num">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+
+                                        <span class="rule-tab-text">{{ __($category->name) }}</span>
+
                                         @if (!empty($category->children))
                                             <span class="rule-tab-toggle" onclick="toggleRuleCategory(event, this)">
                                                 <x-icon path="ph.regular.caret-right" class="toggle-icon" />
                                             </span>
                                         @endif
-
-                                        <span class="rule-tab-text">{{ __($category->name) }}</span>
                                     </button>
 
                                     @if (!empty($category->children))
                                         <div class="rule-tab-children">
-                                            @foreach ($category->children as $child)
+                                            @foreach ($category->children as $childIndex => $child)
                                                 <button
                                                     class="rule-tab rule-tab-child {{ $firstCategory && $firstCategory->id === $child->id ? 'rule-tab-active' : '' }}"
                                                     hx-get="{{ url('/rules/' . $child->slug) }}"
@@ -74,6 +77,7 @@
                                                     onclick="handleCategoryClick(this, '{{ $child->slug }}')"
                                                     data-category-slug="{{ $child->slug }}"
                                                     data-category-id="{{ $child->id }}">
+                                                    <span class="rule-tab-child-dot"></span>
                                                     {{ __($child->name) }}
                                                 </button>
                                             @endforeach
